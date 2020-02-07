@@ -4,7 +4,7 @@ import random
 
 
 RUN_TIME_SECONDS = 120
-RUN_NUMBER = 8
+RUN_NUMBER = 5
 RANDOM_NUMBER = 10
 emulator_id = "emulator-5554"
 adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
@@ -30,7 +30,7 @@ print('Program Starting....')
 while i < RUN_NUMBER:
     r2 = random.randint(0, RANDOM_NUMBER)
     time.sleep(113 + r2)
-    print('Resetting')
+    print('Resetting Run....')
     reset_run()
     i += 1
     print("######################################################Run Number: ", i, "  With random int: ", r2)
