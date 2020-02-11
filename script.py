@@ -4,8 +4,9 @@ import random
 
 
 RUN_TIME_SECONDS = 118
-RUN_NUMBER = (166/15) - 1
+RUN_NUMBER = (138/15) - 1
 RANDOM_NUMBER = 10
+LEVEL_UP = False
 emulator_id = "emulator-5554"
 adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
 print(adb.devices())
@@ -24,8 +25,9 @@ def reset_run():
     time.sleep(8 + r3)
     d.click(START_SPACE[0], START_SPACE[1])
     time.sleep(5 + r3)
-    d.click(START_SPACE[0], START_SPACE[1])
-    time.sleep(3)
+    if LEVEL_UP:
+        d.click(START_SPACE[0], START_SPACE[1])
+        time.sleep(3)
     d.click(MISSION_START[0], MISSION_START[1])
 
 
