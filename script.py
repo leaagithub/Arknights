@@ -4,7 +4,7 @@ import random
 
 
 RUN_TIME_SECONDS = 118
-RUN_NUMBER = (138/15) - 1
+RUN_NUMBER = (458/15) - 1
 RANDOM_NUMBER = 10
 LEVEL_UP = False
 emulator_id = "emulator-5554"
@@ -36,7 +36,7 @@ d.click(MISSION_START[0], MISSION_START[1])
 print('Program Starting....')
 while i < RUN_NUMBER:
     r2 = random.randint(0, RANDOM_NUMBER)
-    time.sleep(113 + r2)
+    time.sleep((RUN_TIME_SECONDS-5) + r2)
     print('Resetting Run....')
     reset_run()
     i += 1
