@@ -4,7 +4,7 @@ import random
 
 RUN_TIME_SECONDS_GT5 = 118
 RUN_TIME_SECONDS_GT6 = 160
-CURRENT_SANITY = 116
+CURRENT_SANITY = 124
 MAX_SANITY = 125
 STAGE_COST = 15
 RANDOM_NUMBER = 5
@@ -22,7 +22,7 @@ START_SPACE = [1444, 810]
 MISSION_START = [1375, 630]
 RANDOM_SPOT_CLAIM = [800, 250]
 REFILL_PRIME = [1360, 720]
-start_time = time.process_time()
+start_time = time.perf_counter()
 
 
 def reset_run():
@@ -77,11 +77,11 @@ for x in range(PRIME_REFILL):
         end_run()
         i += 1
         print("Run Number:", i, "with random int: ", r2)
-        print('Current clock: ', (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300)) + LEFTOVER_CLOCK)
-        if (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) >= 4500:
+        print('Current clock: ', (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK))
+        if (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) >= 4500:
             RUN_NUMBER += 1
-            LEFTOVER_CLOCK = (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) - 4500
-            start_time = time.process_time()
+            LEFTOVER_CLOCK = (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) - 4500
+            start_time = time.perf_counter()
             if LEFTOVER_SANITY != 0:
                 print('Set the leftover sanity to 0, now we wait for next interval of 4500 seconds alone')
                 LEFTOVER_SANITY = 0
