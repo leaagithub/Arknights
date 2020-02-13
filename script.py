@@ -4,11 +4,12 @@ import random
 
 RUN_TIME_SECONDS_GT5 = 118
 RUN_TIME_SECONDS_GT6 = 160
-CURRENT_SANITY = 139
+CURRENT_SANITY = 260
+MAX_SANITY = 125
 STAGE_COST = 15
 RUN_NUMBER = (CURRENT_SANITY // STAGE_COST)
 RANDOM_NUMBER = 5
-PRIME_REFILL = 3
+PRIME_REFILL = 1
 LEVEL_UP = False
 emulator_id = "emulator-5554"
 adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
@@ -57,6 +58,7 @@ def refill_prime():
     d.click(START_SPACE[0], START_SPACE[1])
     time.sleep(4)
     d.click(REFILL_PRIME[0], REFILL_PRIME[1])
+    RUN_NUMBER = MAX_SANITY // STAGE_COST
 
 
 print('Program Starting....')
@@ -71,7 +73,7 @@ for x in range(PRIME_REFILL):
         end_run()
         i += 1
         print("Run Number:", i, "with random int: ", r2)
-        if ((time.clock() - start_time) + (LEFTOVER_SANITY*300)) >= 4500:
+        if (int(time.clock() - start_time) + (LEFTOVER_SANITY*300)) >= 4500:
             RUN_NUMBER += 1
             start_time = time.clock()
             if LEFTOVER_SANITY != 0:
