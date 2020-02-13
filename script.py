@@ -4,22 +4,25 @@ import random
 
 RUN_TIME_SECONDS_GT5 = 118
 RUN_TIME_SECONDS_GT6 = 160
-CURRENT_SANITY = 18
+CURRENT_SANITY = 116
 MAX_SANITY = 125
 STAGE_COST = 15
 RANDOM_NUMBER = 5
 PRIME_REFILL = 3
 OLD_LEFTOVER_SANITY = 0
+LEFTOVER_CLOCK = 0
 LEVEL_UP = False
 emulator_id = "emulator-5554"
 adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
 print(adb.devices())
 d = adb.device(serial=emulator_id)
+
+
 START_SPACE = [1444, 810]
 MISSION_START = [1375, 630]
 RANDOM_SPOT_CLAIM = [800, 250]
 REFILL_PRIME = [1360, 720]
-start_time = time.clock()
+start_time = time.process_time()
 
 
 def reset_run():
@@ -57,7 +60,6 @@ def refill_prime():
     d.click(START_SPACE[0], START_SPACE[1])
     time.sleep(4)
     d.click(REFILL_PRIME[0], REFILL_PRIME[1])
-    RUN_NUMBER = MAX_SANITY // STAGE_COST
 
 
 print('Program Starting....')
@@ -75,10 +77,11 @@ for x in range(PRIME_REFILL):
         end_run()
         i += 1
         print("Run Number:", i, "with random int: ", r2)
-        print('Current clock: ', (int(time.clock() - start_time) + (LEFTOVER_SANITY*300)))
-        if (int(time.clock() - start_time) + (LEFTOVER_SANITY*300)) >= 4500:
+        print('Current clock: ', (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300)) + LEFTOVER_CLOCK)
+        if (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) >= 4500:
             RUN_NUMBER += 1
-            start_time = time.clock()
+            LEFTOVER_CLOCK = (int(time.process_time() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) - 4500
+            start_time = time.process_time()
             if LEFTOVER_SANITY != 0:
                 print('Set the leftover sanity to 0, now we wait for next interval of 4500 seconds alone')
                 LEFTOVER_SANITY = 0
@@ -88,8 +91,11 @@ for x in range(PRIME_REFILL):
         if i < RUN_NUMBER:
             start_run()
             print("Start Run...")
-    print('Prime Refill ', x)
-    refill_prime()
+    if x != PRIME_REFILL-1:
+        print('Prime Refill ', x)
+        refill_prime()
+    else:
+        print('Stopping Last Prime Refill')
     CURRENT_SANITY = MAX_SANITY
     OLD_LEFTOVER_SANITY = LEFTOVER_SANITY
     start_run()
