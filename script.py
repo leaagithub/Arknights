@@ -2,27 +2,31 @@ import adbutils
 import time
 import random
 
+# SANITY AND TIME VARIABLES
 RUN_TIME_SECONDS_GT5 = 118
 RUN_TIME_SECONDS_GT6 = 160
-CURRENT_SANITY = 124
+CURRENT_SANITY = 86
 MAX_SANITY = 125
 STAGE_COST = 15
 RANDOM_NUMBER = 5
-PRIME_REFILL = 3
-OLD_LEFTOVER_SANITY = 0
-LEFTOVER_CLOCK = 0
-LEVEL_UP = False
-emulator_id = "emulator-5554"
-adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
-print(adb.devices())
-d = adb.device(serial=emulator_id)
+PRIME_REFILL = 5
 
+# SCREEN VARIABLES
 
 START_SPACE = [1444, 810]
 MISSION_START = [1375, 630]
 RANDOM_SPOT_CLAIM = [800, 250]
 REFILL_PRIME = [1360, 720]
+
+# DECLARED VARIABLES NEEDED
+emulator_id = "emulator-5554"
+adb = adbutils.AdbClient(host="127.0.0.1", port=5037)
+print(adb.devices())
+d = adb.device(serial=emulator_id)
 start_time = time.perf_counter()
+OLD_LEFTOVER_SANITY = 0
+LEFTOVER_CLOCK = 0
+LEVEL_UP = False
 
 
 def reset_run():
@@ -77,10 +81,10 @@ for x in range(PRIME_REFILL):
         end_run()
         i += 1
         print("Run Number:", i, "with random int: ", r2)
-        print('Current clock: ', (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK))
-        if (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) >= 4500:
+        print('Current clock: ', (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY * 300) + LEFTOVER_CLOCK))
+        if (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY * 300) + LEFTOVER_CLOCK) >= 4500:
             RUN_NUMBER += 1
-            LEFTOVER_CLOCK = (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY*300) + LEFTOVER_CLOCK) - 4500
+            LEFTOVER_CLOCK = (int(time.perf_counter() - start_time) + (LEFTOVER_SANITY * 300) + LEFTOVER_CLOCK) - 4500
             start_time = time.perf_counter()
             if LEFTOVER_SANITY != 0:
                 print('Set the leftover sanity to 0, now we wait for next interval of 4500 seconds alone')
@@ -91,7 +95,7 @@ for x in range(PRIME_REFILL):
         if i < RUN_NUMBER:
             start_run()
             print("Start Run...")
-    if x != PRIME_REFILL-1:
+    if x != PRIME_REFILL - 1:
         print('Prime Refill ', x)
         refill_prime()
     else:
