@@ -5,11 +5,15 @@ import random
 # SANITY AND TIME VARIABLES
 RUN_TIME_SECONDS_GT5 = 118
 RUN_TIME_SECONDS_GT6 = 160
-CURRENT_SANITY = 86
+CURRENT_SANITY = 96
 MAX_SANITY = 125
 STAGE_COST = 15
 RANDOM_NUMBER = 5
 PRIME_REFILL = 5
+CURRENT_EXP = 7276
+TOTAL_EXP = 15000
+EXP_PER_RUN = 180
+RUN_NUMBER = 0
 
 # SCREEN VARIABLES
 
@@ -66,17 +70,44 @@ def refill_prime():
     d.click(REFILL_PRIME[0], REFILL_PRIME[1])
 
 
+def cal_run_number():
+    global LEFTOVER_SANITY
+    global RUN_NUMBER
+    LEFTOVER_SANITY = (CURRENT_SANITY % STAGE_COST) + OLD_LEFTOVER_SANITY
+    RUN_NUMBER = (CURRENT_SANITY // STAGE_COST)
+
+
+def cal_exp():
+    global CURRENT_EXP
+    global TOTAL_EXP
+    global EXP_PER_RUN
+    global CURRENT_SANITY
+    CURRENT_EXP += EXP_PER_RUN
+    if CURRENT_EXP > TOTAL_EXP:
+        # LEVEL UP
+        CURRENT_EXP = CURRENT_EXP - TOTAL_EXP
+        TOTAL_EXP = TOTAL_EXP + 1000
+        # GUESS OF WHEN NEXT LEVEL UPS
+        time.sleep(2)
+        d.click(REFILL_PRIME[0], REFILL_PRIME[1])
+        # CLICK ANYWHERE JUST TO GET OUT OF LEVEL UP SCREEN
+        CURRENT_SANITY = (RUN_NUMBER*STAGE_COST) + LEFTOVER_SANITY + MAX_SANITY
+        # RECALCULATE THE RUN NUMBERS
+        cal_run_number()
+    print('EXP NEEDED TO LEVEL', TOTAL_EXP-CURRENT_EXP)
+
+
 print('Program Starting....')
 d.click(MISSION_START[0], MISSION_START[1])
 
 for x in range(PRIME_REFILL):
     i = 0
-    LEFTOVER_SANITY = (CURRENT_SANITY % STAGE_COST) + OLD_LEFTOVER_SANITY
-    RUN_NUMBER = (CURRENT_SANITY // STAGE_COST)
+    cal_run_number()
     print('Run Number Count: ', RUN_NUMBER, 'Leftover Sanity: ', LEFTOVER_SANITY)
     while i < RUN_NUMBER:
         r2 = random.randint(0, RANDOM_NUMBER)
         time.sleep((RUN_TIME_SECONDS_GT6 - 5) + r2)
+        cal_exp()
         print('Resetting Run....')
         end_run()
         i += 1
