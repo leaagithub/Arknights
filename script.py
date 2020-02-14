@@ -10,10 +10,12 @@ MAX_SANITY = 125
 STAGE_COST = 15
 RANDOM_NUMBER = 5
 PRIME_REFILL = 5
+RUN_NUMBER = 0
+# EXP VARIABLES
 CURRENT_EXP = 7276
 TOTAL_EXP = 15000
 EXP_PER_RUN = 180
-RUN_NUMBER = 0
+
 
 # SCREEN VARIABLES
 
@@ -33,15 +35,19 @@ LEFTOVER_CLOCK = 0
 LEVEL_UP = False
 
 
+def random_millisecond():
+    milli = random.randint(0, 100)
+    milli = milli / 100
+    return milli
+
+
 def reset_run():
     r1 = random.randint(0, RANDOM_NUMBER)
-    r3 = random.randint(0, 100)
-    r3 = r3 / 100
     time.sleep(5 + r1)
     d.click(RANDOM_SPOT_CLAIM[0], RANDOM_SPOT_CLAIM[1])
-    time.sleep(8 + r3)
+    time.sleep(8 + random_millisecond())
     d.click(START_SPACE[0], START_SPACE[1])
-    time.sleep(5 + r3)
+    time.sleep(5 + random_millisecond())
     if LEVEL_UP:
         d.click(START_SPACE[0], START_SPACE[1])
         time.sleep(3)
@@ -55,18 +61,16 @@ def end_run():
 
 
 def start_run():
-    r3 = random.randint(0, 100)
-    r3 = r3 / 100
-    time.sleep(8 + r3)
+    time.sleep(8 + random_millisecond())
     d.click(START_SPACE[0], START_SPACE[1])
-    time.sleep(5 + r3)
+    time.sleep(5 + random_millisecond())
     d.click(MISSION_START[0], MISSION_START[1])
 
 
 def refill_prime():
-    time.sleep(4)
+    time.sleep(4+random_millisecond())
     d.click(START_SPACE[0], START_SPACE[1])
-    time.sleep(4)
+    time.sleep(4+random_millisecond())
     d.click(REFILL_PRIME[0], REFILL_PRIME[1])
 
 
@@ -88,7 +92,7 @@ def cal_exp():
         CURRENT_EXP = CURRENT_EXP - TOTAL_EXP
         TOTAL_EXP = TOTAL_EXP + 1000
         # GUESS OF WHEN NEXT LEVEL UPS
-        time.sleep(2)
+        time.sleep(2+random_millisecond())
         d.click(REFILL_PRIME[0], REFILL_PRIME[1])
         # CLICK ANYWHERE JUST TO GET OUT OF LEVEL UP SCREEN
         CURRENT_SANITY = (RUN_NUMBER*STAGE_COST) + LEFTOVER_SANITY + MAX_SANITY
